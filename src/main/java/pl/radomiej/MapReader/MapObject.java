@@ -331,37 +331,41 @@ public class MapObject implements Comparable<MapObject> {
         }
     }
 
+//    @Override
+//    public int compareTo(MapObject secondObject) {
+//        if (this.def.placementOrder != secondObject.def.placementOrder) {
+//            return this.def.placementOrder >= secondObject.def.placementOrder ? 1 : -1;
+//        }
+//
+//        if (this.y != secondObject.y) {
+//            return this.y >= secondObject.y ? -1 : 1;
+//        }
+//
+//        if (secondObject.obj == MapObject.Obj.HERO && this.obj != MapObject.Obj.HERO) {
+//            return 1;
+//        }
+//        if (secondObject.obj != MapObject.Obj.HERO && this.obj == MapObject.Obj.HERO) {
+//            return -1;
+//        }
+//
+//        if (!this.def.isVisitable() && secondObject.def.isVisitable()) {
+//            return 1;
+//        }
+//        if (!secondObject.def.isVisitable() && this.def.isVisitable()) {
+//            return -1;
+//        }
+//
+//        if (this.x <= secondObject.x) {
+//            return 1;
+//        }
+//
+//        return -1;
+//    }
+
     @Override
     public int compareTo(MapObject secondObject) {
-        if (this.def.placementOrder != secondObject.def.placementOrder) {
-            return this.def.placementOrder >= secondObject.def.placementOrder ? 1 : -1;
-        }
-
-        if (this.y != secondObject.y) {
-            return this.y >= secondObject.y ? -1 : 1;
-        }
-
-        if (secondObject.obj == MapObject.Obj.HERO && this.obj != MapObject.Obj.HERO) {
-            return 1;
-        }
-        if (secondObject.obj != MapObject.Obj.HERO && this.obj == MapObject.Obj.HERO) {
-            return -1;
-        }
-
-        if (!this.def.isVisitable() && secondObject.def.isVisitable()) {
-            return 1;
-        }
-        if (!secondObject.def.isVisitable() && this.def.isVisitable()) {
-            return -1;
-        }
-
-        if (this.x <= secondObject.x) {
-            return 1;
-        }
-
-        return -1;
+        return this.hashCode() > secondObject.hashCode() ? 1 : -1;
     }
-
     public enum Obj {
         NO_OBJ(-1),
         ALTAR_OF_SACRIFICE(2),

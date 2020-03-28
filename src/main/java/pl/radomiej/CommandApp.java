@@ -1,13 +1,19 @@
 package pl.radomiej;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import pl.radomiej.MapReader.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.stream.Stream;
 
 public class CommandApp {
@@ -22,6 +28,10 @@ public class CommandApp {
         }
 
         objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(BitSet.class, new BitSetSerializer());
+        objectMapper.registerModule(module);
+
         String inputFolder = args[0];
         outputFolder = args[1];
 
@@ -40,7 +50,6 @@ public class CommandApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private static void writeToJson(Path path) throws IOException {
@@ -54,5 +63,30 @@ public class CommandApp {
 
     private static boolean isHommMapFile(Path path) {
         return path.toString().endsWith(".h3m");
+    }
+
+
+    public static class BitSetSerializer extends JsonSerializer<BitSet>
+    {
+        @Override
+        public void serialize(BitSet value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException, JsonProcessingException
+        {
+            gen.writeStartArray();
+            for (long l : value.toLongArray())
+            {
+                gen.writeNumber(l);
+            }
+//            for(int i = 0; i < value.size(); i++){
+//                gen.writeNumber(value.get(i) ? 1 : 0);
+//            }
+            gen.writeEndArray();
+        }
+
+        @Override
+        public Class<BitSet> handledType()
+        {
+            return BitSet.class;
+        }
     }
 }

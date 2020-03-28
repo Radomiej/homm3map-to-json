@@ -653,6 +653,10 @@ public class MapReader {
             object.y = stream.readInt(1);
             object.z = stream.readInt(1);
             int idx = stream.readInt(4);
+            if (idx >= defs.size() || idx < 0) {
+                System.err.println("Read idx is so much: " + idx);
+                throw new IOException("Parse error");
+            }
             object.def = defs.get(idx).clone();
             object.obj = MapObject.Obj.fromInt(object.def.objectId);
 
@@ -950,7 +954,12 @@ public class MapReader {
                         max = stream.readInt(1); //max lvl
                     }
 
-                    randomLevel = new Random(System.currentTimeMillis()).nextInt(max - min) + min;
+                    int bound = max - min;
+                    if (min > max || min < 0 || max < 0 || bound <= 0) {
+                        System.err.println("Read obj is broken");
+                        throw new IOException("Parse error");
+                    }
+                    randomLevel = new Random(System.currentTimeMillis()).nextInt(bound) + min;
                     switch (object.obj) {
                         case RANDOM_DWELLING_LVL:
                             object.def.spriteName = MapObject.getRandomDwellingDefNameByLevel(randomLevel);

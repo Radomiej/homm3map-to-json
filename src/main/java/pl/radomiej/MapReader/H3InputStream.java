@@ -46,8 +46,9 @@ public class H3InputStream extends FilterInputStream {
 
     public String readString() throws IOException {
         int length = readStringLength();
-        if(length > 64000){
+        if (length > 64000) {
             System.err.println("Read String is so long: " + length);
+            throw new IOException("Parse error");
         }
         buffer = new byte[length];
         super.read(buffer, 0, length);
