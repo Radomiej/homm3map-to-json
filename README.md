@@ -16,11 +16,10 @@ java -jar E:\HeroesWorkarea\h3m E:\HeroesWorkarea\h3m-json
 
 ```
 
-example of generated json:
 
-# judgement day.h3m
+# Example of generated json
 <details>
-  <summary>Click to expand!</summary>
+  <summary>judgement day.h3m</summary>
   
    ```json
 
